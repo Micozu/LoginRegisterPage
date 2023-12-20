@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login/Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 400px;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    label, input, button {
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .success-message {
+      text-align: center;
+      color: #27ae60;
+      font-weight: bold;
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to YourSite</h1>
+
+    <form id="loginForm" style="display: block;">
+      <h2>Login</h2>
+      <label for="loginUsername">Username:</label>
+      <input type="text" id="loginUsername" name="loginUsername" required>
+      <label for="loginPassword">Password:</label>
+      <input type="password" id="loginPassword" name="loginPassword" required>
+      <button type="submit" onclick="login(event)">Login</button>
+      <p class="switch">Don't have an account? <a href="#" onclick="toggleForm()">Register</a></p>
+    </form>
+
+    <form id="registerForm" style="display: none;">
+      <h2>Register</h2>
+      <label for="registerUsername">Username:</label>
+      <input type="text" id="registerUsername" name="registerUsername" required>
+      <label for="registerPassword">Password:</label>
+      <input type="password" id="registerPassword" name="registerPassword" required>
+      <button type="submit" onclick="register(event)">Register</button>
+      <p class="switch">Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
+    </form>
+
+    <p class="success-message" id="successMessage" style="display: none;">Logged in successfully!</p>
+  </div>
+
+  <script>
+    let users = []; // Store registered users
+
+    function toggleForm() {
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const successMessage = document.getElementById('successMessage');
+
+      if (loginForm.style.display === 'none') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        successMessage.style.display = 'none';
+      } else {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        successMessage.style.display = 'none';
+      }
+    }
+
+    function login(event) {
+      event.preventDefault();
+      const username = document.getElementById('loginUsername').value;
+      const password = document.getElementById('loginPassword').value;
+
+      // Check if user exists in the users array
+      const user = users.find(u => u.username === username && u.password === password);
+      
+      if (user) {
+        const successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'block';
+      } else {
+        alert('Invalid username or password');
+      }
+    }
+
+    function register(event) {
+      event.preventDefault();
+      const username = document.getElementById('registerUsername').value;
+      const password = document.getElementById('registerPassword').value;
+
+      // Check if the username is already taken
+      const existingUser = users.find(u => u.username === username);
+
+      if (existingUser) {
+        alert('Username already exists. Please choose another username.');
+      } else {
+        users.push({ username, password });
+        toggleForm(); // Automatically switch to the login form after successful registration
+        alert('Registration successful. You can now log in.');
+      }
+    }
+  </script>
+</body>
+</html>
